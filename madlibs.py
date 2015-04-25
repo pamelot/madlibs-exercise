@@ -46,8 +46,21 @@ def show_madlib():
     color = request.args.get('color')
     noun = request.args.get('noun')
     adjective = request.args.get('adjective')
+    image = request.args.get('image')
+    fname = request.args.get('first_name')
+    compliment = request.args.getlist('compliment')
 
-    return render_template('madlib.html', name=name, color=color, noun=noun, adjective=adjective)
+    if len(compliment) > 1:
+        display_word = ""
+        for word in compliment:
+            display_word = word + " and " + display_word
+    else: 
+        display_word = compliment[0]
+
+    libs = ['madlib.html', 'madlib1.html']
+    render_choice = choice(libs)
+    return render_template(render_choice, name=name, color=color, noun=noun, 
+        adjective=adjective, image=image, fname=fname, compliment = compliment, display_word=display_word)
 
 if __name__ == '__main__':
     # debug=True gives us error messages in the browser and also "reloads" our web app
